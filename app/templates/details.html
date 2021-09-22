@@ -1,0 +1,54 @@
+<html>
+    <head>
+    	<title>Movie Details</title>
+    	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  		<link rel="stylesheet" type="text/css" href="static/css/style.css">
+    </head>
+    <body>
+    	<div class="container">
+    		<h1 align="center">Details of a Movie Title</h1>
+			<h4 id="movie" align="center">{{movie}}</h4>
+	        <table>
+		        <thead>
+					<tr>
+						<td><b>Title</b></td>
+						<td><b>Description</b></td>
+						<td><b>Image</b></td>
+					</tr>
+		        </thead>
+		        <tbody>
+		        {% for row in result %}
+		            <tr>
+		                <td>{{row['title']}}</td>
+		                <td>{{row['description']}}</td>
+						<td><img src={{row['image']}} alt="" border=3 height=80 width=80></td>
+		            </tr>
+		        {% endfor %}
+		        </tbody>
+	      	</table>
+			<br>
+	        <div class="wrapper">
+	        	<button id="like" type="button" class="btn btn-default">Like</button>
+	        	<button id="dislike" type="button" class="btn btn-default">Dislike</button>
+	        </div>
+	        <br>
+	        <br>
+	      	<a href = "/">Go back to home page</a>
+	    </div>
+		<script>
+			$('button').click(function(e){
+			    var idClicked = this.id;
+			    if ($("#movie").text() != ''){
+				    if (idClicked == "like" || idClicked == "dislike"){
+				    	$.post("/saveOpinion", {
+							movie: $("#movie").text(),
+							opinion: idClicked
+						});
+			    	}
+				}
+			});
+		</script>
+    </body>
+</html>

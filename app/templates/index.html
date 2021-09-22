@@ -1,0 +1,66 @@
+<html>
+    <head>
+    	<title>Top 250 Movies</title>
+    	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="static/css/style.css">
+  		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+    	<div class="container">
+	        <h1 align="center">Top 250 Movies!</h1>
+			<input type="text" id="year" onkeyup="search()" placeholder="Filter results by Name, Year">
+			<br>
+			<br>
+			<table id="movies250">
+			  <thead>
+				<tr>
+					<td><b>Rank</b></td>
+					<td><b>Movies Name</b></td>
+					<td><b>Year</b></td>
+				</tr>
+				</thead>
+				<tbody>
+				 {% for row in result %}
+					<tr class="movie" data-href="#">
+						<td>{{row['rank']}}</td>
+						<td>{{row['title']}}</td>
+						<td>{{row['year']}}</td>
+					</tr>
+				 {% endfor %}
+				</tbody>
+			</table>
+			<br>
+	    </div>
+	    <script>
+			$('tr').click(function(e){
+				var currentRow=$(this).closest("tr");
+				// Get current row 2nd table cell TD value
+				var col2 = currentRow.find("td:eq(1)").html();
+				window.location.href='/movieDetails?movie=' + col2;
+			})
+			function search() {
+				var input = document.getElementById("year");
+				var filter = input.value.toUpperCase();
+				var table = document.getElementById("movies250");
+				var tr = table.getElementsByTagName("tr");
+
+				// Loop through all the table rows, and hide those who don't match the search query
+				for (i = 0; i < tr.length; i++) {
+					var col1 = tr[i].getElementsByTagName("td")[0];
+					var col2 = tr[i].getElementsByTagName("td")[1];
+					var col3 = tr[i].getElementsByTagName("td")[2];
+					if (col1 && col2 && col3) {
+						if (col1.textContent.toUpperCase().indexOf(filter) > -1 ||
+							col2.textContent.toUpperCase().indexOf(filter) > -1 ||
+							col3.textContent.toUpperCase().indexOf(filter) > -1) {
+							tr[i].style.display = "";
+						} else {
+							tr[i].style.display = "none";
+						}
+					}
+				}
+			}
+		</script>
+    </body>
+</html>
